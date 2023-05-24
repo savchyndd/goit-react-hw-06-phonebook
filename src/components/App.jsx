@@ -42,9 +42,9 @@ export const App = () => {
   };
 
   const getFilterContacts = () => {
-    const FilterlowerCase = filter.toLowerCase();
+    const filterlowerCase = filter.toLowerCase();
     return contacts.filter(({ name }) =>
-      name.toLowerCase().includes(FilterlowerCase)
+      name.toLowerCase().includes(filterlowerCase)
     );
   };
 
