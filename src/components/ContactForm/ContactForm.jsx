@@ -1,32 +1,27 @@
-import { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { getContactsList } from 'redux/selectors';
+import { addContact } from 'redux/contactsSlice';
 
 import { Form, Input, Label, Button } from './ContactForm.module';
 
-export const ContactForm = ({ addContact }) => {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
-
-  const handleChange = ({ target: { name, value } }) => {
-    switch (name) {
-      case 'name':
-        setName(value);
-        break;
-      case 'number':
-        setNumber(value);
-        break;
-      default:
-        console.warn(`Field type name - ${name} is not handled`);
-    }
-  };
+export const ContactForm = () => {
+  const dispatch = useDispatch();
+  const contacts = useSelector(getContactsList);
 
   const handleSubmit = e => {
     e.preventDefault();
 
-    addContact({ name, number });
+    const form = e.target;
+    const formName = e.target.elements.name.value;
+    const formNumber = e.target.elements.number.value;
 
-    setName('');
-    setNumber('');
+    if (contacts.some(({ name }) => name === formName)) {
+      return alert(`${formName} is already in contacts`);
+    }
+
+    dispatch(addContact(formName, formNumber));
+    form.reset();
   };
 
   return (
@@ -40,8 +35,7 @@ export const ContactForm = ({ addContact }) => {
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
           required
           placeholder="Enter name"
-          value={name}
-          onChange={handleChange}
+          value={contacts.name}
         />
       </Label>
       <Label>
@@ -53,17 +47,10 @@ export const ContactForm = ({ addContact }) => {
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
           placeholder="Enter number"
-          value={number}
-          onChange={handleChange}
+          value={contacts.number}
         />
       </Label>
-      <Button type="submit" disabled={!name || !number}>
-        Add contact
-      </Button>
+      <Button type="submit">Add contact</Button>
     </Form>
   );
-};
-
-ContactForm.propTypes = {
-  addContact: PropTypes.func.isRequired,
 };
