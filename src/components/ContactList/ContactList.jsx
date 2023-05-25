@@ -9,12 +9,9 @@ import { ContactsList } from './ContactList.module';
 export const ContactList = () => {
   const contacts = useSelector(getContactsList);
   const filter = useSelector(getContactsFilter);
-  const visibleContacts =
-    [
-      ...contacts.filter(contact =>
-        contact.name.toLowerCase().includes(filter)
-      ),
-    ] || [];
+  const visibleContacts = [
+    ...contacts.filter(contact => contact.name.toLowerCase().includes(filter)),
+  ];
 
   return (
     <ContactsList>

@@ -12,7 +12,6 @@ export const Filter = () => {
   const handleChangeFilter = ({ currentTarget: { value } }) => {
     const normalizedValue = value.toLowerCase().trim();
     dispatch(setContactsFilter(normalizedValue));
-    console.log(normalizedValue);
   };
 
   return (
